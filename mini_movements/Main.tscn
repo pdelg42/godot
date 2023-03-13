@@ -1,11 +1,65 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
 [ext_resource path="res://Map Limits.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Background.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.417178, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0, 0.0281982, 0.257812, 1, 0.269379, 0, 0.355469, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Environment" id=1]
+background_mode = 4
+background_color = Color( 0.176471, 0, 0.321569, 1 )
+ambient_light_color = Color( 0, 0.0156863, 0.27451, 1 )
+adjustment_contrast = 4.42
+adjustment_color_correction = SubResource( 3 )
 
 [node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 133, 81 )
+current = true
+limit_smoothed = true
+smoothing_enabled = true
+
+[node name="ParallaxBackground" parent="." instance=ExtResource( 4 )]
+
+[node name="Light2D" parent="ParallaxBackground/BG" index="0"]
+texture_scale = 1.0
+energy = 1.0
+
+[node name="World" parent="ParallaxBackground" index="6"]
+position = Vector2( 792, 640 )
+
+[node name="World2" parent="ParallaxBackground" index="7"]
+position = Vector2( 1120, 360 )
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 position = Vector2( 133, 81 )
+z_index = 1
+z_as_relative = false
+speed = 50.0
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+remote_path = NodePath("../../Camera2D")
 
 [node name="Map Limits" parent="." instance=ExtResource( 3 )]
+scale = Vector2( 3, 3 )
+
+[node name="CameraLimitTopLeft" type="Position2D" parent="Map Limits"]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="CameraLimitBottomRight" type="Position2D" parent="Map Limits"]
+position = Vector2( 384, 224 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 1 )
+
+[editable path="ParallaxBackground"]

@@ -68,7 +68,7 @@ func _physics_process(_delta):
 	# variabile fi tipo int o float avvenga tramite un certo step
 	
 	# stessa situazione ma con i vettori 
-	velocity = velocity.linear_interpolate(direction.normalized() * speed, 0.06)
+	velocity = velocity.linear_interpolate(direction.normalized() * speed, 0.01)
 	
 	# move_and_slide non ha bisogno di moltiplicare delta alla velocità (lo fà già di suo)
 	velocity = move_and_slide(velocity);
